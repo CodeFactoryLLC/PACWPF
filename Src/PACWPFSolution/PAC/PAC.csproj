@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Description>Base implementation for the Presentation Abstraction Control pattern in Net 5</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Authors>Stephen Giffin</Authors>
+    <Company>CodeFactory, LLC.</Company>
+    <Copyright>Copyright 2020 CodeFactory, LLC.</Copyright>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/CodeFactoryLLC/PACWPF</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/CodeFactoryLLC/PACWPF.git</RepositoryUrl>
+    <PackageTags>WPF PAC</PackageTags>
+    <PackageReleaseNotes>Initial Release supports Net 5 RC2</PackageReleaseNotes>
+    <Version>1.0.0-NET5RC2</Version>
+    <PackageId>PresentationAbstractionControlBase</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
