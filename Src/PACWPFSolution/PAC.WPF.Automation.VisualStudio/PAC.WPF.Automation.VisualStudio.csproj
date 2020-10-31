@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7243DBF6-D0C6-4AEF-8D70-68EEE24C5D11}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PAC.WPF.Automation.VisualStudio</RootNamespace>
+    <AssemblyName>PAC.WPF.Automation.VisualStudio</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <StartAction>Program</StartAction>
+    <StartProgram Condition="'$(DevEnvDir)' != ''">$(DevEnvDir)devenv.exe</StartProgram>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <PackageReference Include="CodeFactory.Formatting.CSharp">
+      <Version>0.90.202401</Version>
+    </PackageReference>
+    <PackageReference Include="CodeFactorySDK">
+      <Version>1.0.202301</Version>
+    </PackageReference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ExplorerCommands\SourceCode\PACAbstractionUpdate.cs" />
+    <Compile Include="ExplorerCommands\SourceCode\PACControllerUpdate.cs" />
+    <Compile Include="ExplorerCommands\SourceCode\PACPresentationUpdate.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ExplorerCommands\Document\Dialog\" />
+    <Folder Include="ExplorerCommands\Document\Logic\" />
+    <Folder Include="ExplorerCommands\Document\Template\" />
+    <Folder Include="ExplorerCommands\Project\Dialog\" />
+    <Folder Include="ExplorerCommands\Project\Logic\" />
+    <Folder Include="ExplorerCommands\Project\Template\" />
+    <Folder Include="ExplorerCommands\Solution\Dialog\" />
+    <Folder Include="ExplorerCommands\Solution\Logic\" />
+    <Folder Include="ExplorerCommands\Solution\Template\" />
+    <Folder Include="ExplorerCommands\SourceCode\Dialog\" />
+    <Folder Include="ExplorerCommands\SourceCode\Logic\" />
+    <Folder Include="ExplorerCommands\SourceCode\Template\" />
+    <Folder Include="Logic\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PAC.WPF.Automation\PAC.WPF.Automation.csproj">
+      <Project>{0cba7c98-a22b-4897-9e9e-684ef518d07c}</Project>
+      <Name>PAC.WPF.Automation</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target> -->
+  <Target Name="AfterBuild">
+    <Exec Command="&quot;$(DevEnvDir)PublicAssemblies\CodeFactory\Packager\cfxpackager.exe&quot; &quot;$(TargetPath)&quot;" />
+    <!-- <PackageCfx Assembly="$(TargetPath)"/>-->
+  </Target>
+</Project>
