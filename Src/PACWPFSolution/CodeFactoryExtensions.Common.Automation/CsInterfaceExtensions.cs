@@ -28,10 +28,10 @@ namespace CodeFactoryExtensions.Common.Automation
 
             if (source.Namespace == lookupInterface.Namespace)
             {
-                return source;
+                if(source.Name == lookupInterface.Name) return source;
             }
 
-            return source.InheritedInterfaces.Any(i => i.InheritsInterface(lookupInterface.FullName, supportGenerics)) ? source : null;
+            return source.InheritsInterface(lookupInterface.FullName,supportGenerics) ? source : null;
         }
 
     }

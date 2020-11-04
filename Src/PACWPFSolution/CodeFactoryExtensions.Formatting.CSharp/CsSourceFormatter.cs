@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using CodeFactory;
 
@@ -121,6 +122,41 @@ namespace CodeFactoryExtensions.Formatting.CSharp
         public new void ResetFormatter()
         {
             _codeFormatter.Clear();
+        }
+
+        /// <summary>
+        /// Static method that returns a code block with the specified number of indent levels.
+        /// </summary>
+        /// <param name="indentLevel">The target indent level to be added to the existing code block.</param>
+        /// <param name="codeBlock">The block of code to append to.</param>
+        /// <param name="indentStatement">the default syntax to used for indenting your source code. This will default to a tab statement unless updated</param>
+        /// <returns>The indented code block or null if no code block was provided.</returns>
+        public static string IndentCodeBlock(int indentLevel, string codeBlock, string indentStatement = "\t")
+        {
+            if (string.IsNullOrEmpty(codeBlock)) return null;
+
+            var formatter = new CsSourceFormatter(indentStatement);
+            formatter.AppendCodeBlock(indentLevel,codeBlock);
+
+            return formatter.ReturnSource();
+        }
+
+        /// <summary>
+        /// Static method that returns a code block with the specified number of indent levels.
+        /// </summary>
+        /// <param name="indentLevel">The target indent level to be added to the existing code block.</param>
+        /// <param name="codeBlock">The block of code to append to.</param>
+        /// <param name="indentStatement">the default syntax to used for indenting your source code. This will default to a tab statement unless updated</param>
+        /// <returns>The indented code block or null if no code block was provided.</returns>
+        public static string IndentCodeBlock(int indentLevel, IEnumerable<string> codeBlock,string indentStatement = "\t")
+        {
+            if (codeBlock == null) return null;
+            if (!codeBlock.Any()) return null;
+
+            var formatter = new CsSourceFormatter(indentStatement);
+            formatter.AppendCodeBlock(indentLevel, codeBlock);
+
+            return formatter.ReturnSource();
         }
     }
 }

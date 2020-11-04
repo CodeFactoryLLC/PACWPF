@@ -17,6 +17,10 @@ namespace CodeFactoryExtensions.Net.AspNet.Automation
         public const string ControllerBaseName = "Microsoft.AspNetCore.Mvc.ControllerBase";
 
         /// <summary>
+        /// The fully qualified name of the controller base class name.
+        /// </summary>
+        public const string ControllerBaseClassName = "ControllerBase";
+        /// <summary>
         /// The full namespace for the mvc namespace.
         /// </summary>
         public const string MvcNamespace = "Microsoft.AspNetCore.Mvc";

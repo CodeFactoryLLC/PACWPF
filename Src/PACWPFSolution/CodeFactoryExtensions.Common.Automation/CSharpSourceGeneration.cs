@@ -296,12 +296,12 @@ namespace CodeFactoryExtensions.Common.Automation
             if (string.IsNullOrEmpty(eventName)) return null;
             if (security == CsSecurity.Unknown) return null;
 
-            var raiseMethod = eventData.RaiseMethod;
+            var raiseMethod = eventData.EventHandlerDelegate.InvokeMethod;
 
             if (raiseMethod == null) return null;
             if (!raiseMethod.IsLoaded) return null;
 
-            var parameters = raiseMethod.Parameters.CSharpFormatParametersSignature(manager);
+            var parameters = raiseMethod.Parameters.CSharpFormatParametersSignature(manager,false);
 
             string raiseHandler = string.IsNullOrEmpty(eventHandler) ? eventName : eventHandler;
 
@@ -327,14 +327,15 @@ namespace CodeFactoryExtensions.Common.Automation
             
             formatter.AppendCodeLine(0, "/// <summary>");
             formatter.AppendCodeLine(0, $"/// Raises the event {eventName} when there are subscribers to the event.");
-            formatter.AppendCodeLine(0, "/// <summary>");
-            formatter.AppendCodeLine(0,$"{security.CSharpFormatKeyword()} {Keywords.Void} {raiseMethodName}({parameters})");
+            formatter.AppendCodeLine(0, "/// </summary>");
+            formatter.AppendCodeLine(0,$"{security.CSharpFormatKeyword()} {Keywords.Void} {raiseMethodName}{parameters}");
             formatter.AppendCodeLine(0, "{");
             formatter.AppendCodeLine(0);
             formatter.AppendCodeLine(1,$"var raiseEvent = {raiseHandler};");
             formatter.AppendCodeLine(1,$"raiseEvent?.Invoke({parametersBuilder});");
             formatter.AppendCodeLine(0);
             formatter.AppendCodeLine(0, "}");
+            formatter.AppendCodeLine(0);
 
             return formatter.ReturnSource();
         }
@@ -399,6 +400,121 @@ namespace CodeFactoryExtensions.Common.Automation
             formatter.AppendCodeLine(0);
 
             //The source formatter returning the final results.
+            return formatter.ReturnSource();
+        }
+
+        /// <summary>
+        /// Generates the source code for an event that supports add remove, does not generate the field definition.
+        /// </summary>
+        /// <param name="memberData">Event data to be loaded.</param>
+        /// <param name="manager">The namespace manager to use for namespace management with type declarations.</param>
+        /// <param name="fieldCamelCase">Flag that determines if the field will be set to camel case or left in proper case.</param>
+        /// <param name="security">The security level to set the source event source code to. Will default to public if not provided.</param>
+        /// <param name="useKeywords">Include the keywords currently assigned to the event model. Default value is to not include them.</param>
+        /// <param name="includeAbstractKeyword">Optional parameter that determines if it will include the definition for the abstract keyword in the definition if it is defined. default is false.</param>
+        /// <param name="requireStaticKeyword">Adds the static keyword to the signature, default is false.</param>
+        /// <param name="requireSealedKeyword">Adds the sealed keyword to the signature, default is false.</param>
+        /// <param name="requireAbstractKeyword">Adds the abstract keyword to the signature, default is false.</param>
+        /// <param name="requireOverrideKeyword">Adds the override keyword to the signature, default is false.</param>
+        /// <param name="requireVirtualKeyword">Adds the virtual keyword to the signature, default is false.</param>
+        /// <param name="fieldNamePrefix">Optional parameter that determines the prefix to add to the field name that backs the event.</param>
+        /// <param name="fieldSuffix">Parameter that determines what the suffix of the event name field is. Default is handler.</param>
+        /// <returns>The fully formatted event source code or null if the member could not be implemented.</returns>
+        public static string GenerateAddRemoveEvent(CsEvent memberData, NamespaceManager manager = null, CsSecurity security = CsSecurity.Public, string fieldNamePrefix = null, string fieldSuffix = "Handler", bool fieldCamelCase = true, 
+            bool useKeywords = false, bool includeAbstractKeyword = false, bool requireStaticKeyword = false, bool requireSealedKeyword = false,
+            bool requireAbstractKeyword = false, bool requireOverrideKeyword = false, bool requireVirtualKeyword = false)
+        {
+            //Bounds checking to make sure all data that is needed is provided. If any required data is missing will return null.
+            if (memberData == null) return null;
+            if (!memberData.IsLoaded) return null;
+            if (manager == null) return null;
+
+            //C# helper used to format output syntax. 
+            var formatter = new CodeFactory.SourceFormatter();
+
+            //If the member has document then will build the documentation.
+            if (memberData.HasDocumentation)
+                //Using a documentation helper that will generate an enumerator that will output all XML documentation for the member.
+                foreach (var documentation in memberData.CSharpFormatXmlDocumentationEnumerator())
+                {
+                    //Appending each xml document line to the being of the member definition.
+                    formatter.AppendCodeLine(0, documentation);
+                }
+
+            //The member has attributes assigned to it, append the attributes.
+            if (memberData.HasAttributes)
+
+                //Using a documentation helper that will generate an enumerator that will output each attribute definition.
+                foreach (var attributeSyntax in memberData.Attributes.CSharpFormatAttributeDeclarationEnumerator(manager))
+                {
+                    //Appending each attribute definition before the member definition.
+                    formatter.AppendCodeLine(0, attributeSyntax);
+                }
+
+
+            var eventSignature = memberData.CSharpFormatEventSignature(manager, true, security, useKeywords,
+                includeAbstractKeyword, requireStaticKeyword, requireSealedKeyword, requireAbstractKeyword,
+                requireOverrideKeyword, requireVirtualKeyword);
+
+            if (string.IsNullOrEmpty(eventSignature)) return null;
+
+            bool hasFieldPrefix = fieldNamePrefix != null;
+
+            bool hasFieldSuffix = fieldSuffix != null;
+
+            StringBuilder fieldNameBuilder = new StringBuilder();
+
+            if (hasFieldPrefix) fieldNameBuilder.Append(fieldNamePrefix);
+
+            var fieldNameData = hasFieldSuffix ? $"{memberData.Name}{fieldSuffix}": memberData.Name;
+
+            fieldNameBuilder.Append(fieldCamelCase ? fieldNameData.ConvertToCamelCase() : fieldNameData);
+
+            var fieldName = fieldNameBuilder.ToString();
+
+            //Adding the event declaration
+            formatter.AppendCodeLine(0, eventSignature);
+
+            formatter.AppendCodeLine(0);
+            formatter.AppendCodeLine(0,"{");
+            formatter.AppendCodeLine(0);
+            formatter.AppendCodeLine(1, "add");
+            formatter.AppendCodeLine(1, "{");
+            formatter.AppendCodeLine(2, $"{fieldName} += value;");
+            formatter.AppendCodeLine(1, "}");
+            formatter.AppendCodeLine(0);
+            formatter.AppendCodeLine(1, "remove");
+            formatter.AppendCodeLine(1, "{");
+            formatter.AppendCodeLine(2, $"if({fieldName} !=null) {fieldName} -= value;");
+            formatter.AppendCodeLine(1, "}");
+            formatter.AppendCodeLine(0);
+            formatter.AppendCodeLine(0, "}");
+            formatter.AppendCodeLine(0);
+
+            //The source formatter returning the final results.
+            return formatter.ReturnSource();
+        }
+
+        public static string GeneratePartialClass(CsClass source,NamespaceManager manager = null)
+        {
+            if (source == null) return null;
+            if (!source.IsLoaded) return null;
+            SourceFormatter formatter = new SourceFormatter();
+
+            StringBuilder classBuilder = new StringBuilder($"{source.Security.CSharpFormatKeyword()} partial {Keywords.Class} {source.Name}");
+
+            if (source.IsGeneric) classBuilder.Append(source.GenericParameters.CSharpFormatGenericParametersSignature(manager));
+
+            formatter.AppendCodeLine(0);
+            formatter.AppendCodeLine(0,$"namespace {source.Namespace}");
+            formatter.AppendCodeLine(0, "{");
+            formatter.AppendCodeLine(0);
+            formatter.AppendCodeLine(1,classBuilder.ToString());
+            formatter.AppendCodeLine(1,"{");
+            formatter.AppendCodeLine(1);
+            formatter.AppendCodeLine(1, "}");
+            formatter.AppendCodeLine(0);
+            formatter.AppendCodeLine(0, "}");
             return formatter.ReturnSource();
         }
 

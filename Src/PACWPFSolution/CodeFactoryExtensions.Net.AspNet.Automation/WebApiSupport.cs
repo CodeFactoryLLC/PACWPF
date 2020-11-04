@@ -36,9 +36,9 @@ namespace CodeFactoryExtensions.Net.AspNet.Automation
             var baseClass = sourceClass?.BaseClass;
             if (baseClass == null) return false;
 
-            var baseClassName = $"{baseClass.Namespace}.{baseClass.Name}";
+            if (sourceClass.Namespace != AspNetConstants.MvcNamespace) return false;
 
-            if (baseClassName == AspNetConstants.ControllerBaseName) return true;
+            if (sourceClass.Name == AspNetConstants.ControllerBaseClassName) return true;
 
             bool isBaseClass = false;
 

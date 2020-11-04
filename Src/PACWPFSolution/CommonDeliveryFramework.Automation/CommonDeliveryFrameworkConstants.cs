@@ -17,8 +17,18 @@ namespace CommonDeliveryFramework.Automation
         public const string CommonDeliveryFrameworkAssemblyName = "CommonDeliveryFramework";
 
         /// <summary>
+        /// The name of the common delivery framework net asp.net assembly name
+        /// </summary>
+        public const string CommonDeliveryFrameworkNetAspNetAssemblyName = "CommonDeliveryFramework.Net.Aspnet";
+
+        /// <summary>
         /// The core namespace for the common delivery framework
         /// </summary>
         public const string CommonDeliveryFrameworkNamespace = "CommonDeliveryFramework";
+
+        /// <summary>
+        /// The core namespace for the common delivery framework that supports net aspnet applications
+        /// </summary>
+        public const string CommonDeliveryFrameworkNetAspNetNamespace= "CommonDeliveryFramework.Net.Aspnet";
     }
 }

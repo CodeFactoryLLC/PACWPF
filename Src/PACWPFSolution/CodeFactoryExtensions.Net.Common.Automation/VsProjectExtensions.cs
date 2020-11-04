@@ -44,7 +44,7 @@ namespace CodeFactoryExtensions.Net.Common.Automation
         /// </summary>
         /// <param name="sourceProject">Target project to check.</param>
         /// <returns>True if found or false of not.</returns>
-        public static async Task<bool> HasMicrosoftExtensionDependencyInjectionLibrariesAsync(VsProject sourceProject)
+        public static async Task<bool> HasMicrosoftExtensionDependencyInjectionLibrariesAsync(this VsProject sourceProject)
         {
             if (sourceProject == null) return false;
             if (!sourceProject.IsLoaded) return false;

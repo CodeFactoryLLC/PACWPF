@@ -17,8 +17,9 @@ namespace CodeFactoryExtensions.Formatting.CSharp
         /// </summary>
         /// <param name="source">The source list of parameters to be turned into a parameters signature.</param>
         /// <param name="manager">Optional parameter that contains all the using statements from the source code, when used will replace namespaces on type definition in code.</param>
+        /// <param name="includeAttributes">Determines if the attributes that are assigned to a parameter should be included in the definition</param>
         /// <returns>The fully formatted parameters signature or null if data was missing.</returns>
-        public static string CSharpFormatParametersSignature (this IReadOnlyList<CsParameter> source, NamespaceManager manager = null)
+        public static string CSharpFormatParametersSignature (this IReadOnlyList<CsParameter> source, NamespaceManager manager = null, bool includeAttributes = true)
         {
             if (source == null) return null;
             if (!source.Any()) return null;
@@ -31,7 +32,7 @@ namespace CodeFactoryExtensions.Formatting.CSharp
             {
                 currentParameter++;
 
-                if (sourceParameter.HasAttributes)
+                if (sourceParameter.HasAttributes & includeAttributes)
                 {
                     foreach (var sourceParameterAttribute in sourceParameter.Attributes)
                     {

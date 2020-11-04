@@ -45,5 +45,15 @@
         /// </summary>
         public const string DefaultClassLoggerName = "_logger";
 
+        /// <summary>
+        /// Default name to use for library based dependency injection register class.
+        /// </summary>
+        public const string DefaultDependencyInjectionClassName = "RegisterLibraryServices";
+
+        /// <summary>
+        /// Default name to use for the method name that does automatic transient registration for the class.
+        /// </summary>
+        public const string DefaultAutomaticTransientClassRegistrationMethodName = "AutomaticTransientServicesRegistration";
+
     }
 }

@@ -53,6 +53,7 @@
     <Compile Include="ModelLookupData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CSharpSourceGeneration.cs" />
+    <Compile Include="VsCSharpSourceExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CodeFactoryExtensions.Formatting.CSharp\CodeFactoryExtensions.Formatting.CSharp.csproj">

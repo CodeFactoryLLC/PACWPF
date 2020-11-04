@@ -72,7 +72,7 @@ namespace CodeFactoryExtensions.Common.Automation
 
                 if (target == null) return null;
 
-                result = source.HasInterface(lookupInterface, supportGenerics);
+                result = target.IsTargetInterface(lookupInterface, supportGenerics);
             }
             else
             {
