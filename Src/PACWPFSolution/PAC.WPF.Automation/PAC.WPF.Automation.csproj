@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="CommonDeliveryFramework.Automation">
+      <Version>1.0.203101-RC1</Version>
+    </PackageReference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -38,6 +41,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <PackageReference Include="CodeFactoryExtensions">
+      <Version>1.0.203101-RC1</Version>
+    </PackageReference>
     <PackageReference Include="CodeFactorySDK">
       <Version>1.0.202301</Version>
     </PackageReference>
@@ -52,28 +58,6 @@
     <Compile Include="DependencyInjection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WPFConstants.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CodeFactoryExtensions.Common.Automation\CodeFactoryExtensions.Common.Automation.csproj">
-      <Project>{d1c8a3cc-9d42-4f24-bc4c-cb6bde799dff}</Project>
-      <Name>CodeFactoryExtensions.Common.Automation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CodeFactoryExtensions.Formatting.CSharp\CodeFactoryExtensions.Formatting.CSharp.csproj">
-      <Project>{94878547-9615-4124-b0bd-db8a6976bd86}</Project>
-      <Name>CodeFactoryExtensions.Formatting.CSharp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CodeFactoryExtensions.Net.AspNet.Automation\CodeFactoryExtensions.Net.AspNet.Automation.csproj">
-      <Project>{a3182ede-9427-46ec-8f63-84aa82857cf3}</Project>
-      <Name>CodeFactoryExtensions.Net.AspNet.Automation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CodeFactoryExtensions.Net.Common.Automation\CodeFactoryExtensions.Net.Common.Automation.csproj">
-      <Project>{7be24d6c-baa9-4c1d-8717-22b652abbe13}</Project>
-      <Name>CodeFactoryExtensions.Net.Common.Automation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CommonDeliveryFramework.Automation\CommonDeliveryFramework.Automation.csproj">
-      <Project>{b81acbf1-e3b8-4876-9131-3a6b10269c63}</Project>
-      <Name>CommonDeliveryFramework.Automation</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
